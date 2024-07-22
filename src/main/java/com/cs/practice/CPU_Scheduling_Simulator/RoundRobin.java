@@ -1,27 +1,28 @@
 package com.cs.practice.CPU_Scheduling_Simulator;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
-import static com.cs.practice.CPU_Scheduling_Simulator.Simulator.printBoard;
-
 public class RoundRobin {
-    public void exec(String[][] board, Process[] inputProcess, int totalTime, int TQ){
+    public void exec(int TQ){
 
-        System.out.println("\n-------------------------- [ round_robin ] --------------------------");
-        board = new String[inputProcess.length][totalTime];
-        Queue<Integer> queue = new LinkedList<>();
+        //프로세스, 출력판 초기화
+        Process process = new Process();
+        Process[] inputProcess = process.inputProcess();
+        int totalTime = process.totalTime(inputProcess);
+        String[][] board = new String[inputProcess.length][totalTime];
+
+        //Round_Robin 알고리즘 시작
+
         int timeCount = 0;
+        int completedProcessNum = 0;
+        int processNum = inputProcess.length;
 
-        //큐에 순차적으로 다 담기
-        for(Process p : inputProcess) queue.offer(p.serviceTime);
-
-        for(int i = 0 ; i < inputProcess.length ; i ++){
-            int serviceTime = queue.poll();
-            for(int j = timeCount ; j < timeCount+serviceTime ; j ++) board[i][j]=" ■ ";
-            timeCount+=serviceTime;
+        while(completedProcessNum<processNum){
+            re
         }
 
-        printBoard(board);
+        //출력
+        System.out.println("\n-------------------------- [ round_robin ] --------------------------");
+
+
+
     }
 }

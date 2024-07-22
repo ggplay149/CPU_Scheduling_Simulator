@@ -1,28 +1,34 @@
 package com.cs.practice.CPU_Scheduling_Simulator;
 
+import lombok.NoArgsConstructor;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
-import static com.cs.practice.CPU_Scheduling_Simulator.Simulator.printBoard;
-
+@NoArgsConstructor
 public class FIFO {
 
-    public void exec(String[][] board, Process[] inputProcess, int totalTime){
+    public void exec(){
 
-        System.out.println("\n-------------------------- [ FIFO ] --------------------------");
-        board = new String[inputProcess.length][totalTime];
+        //프로세스, 출력판 초기화
+        Process process = new Process();
+        Process[] inputProcess = process.inputProcess();
+        int totalTime = process.totalTime(inputProcess);
+        String[][] board = new String[inputProcess.length][totalTime];
+
+        //FIFO 알고리즘
         Queue<Integer> queue = new LinkedList<>();
         int timeCount = 0;
-
-        //큐에 순차적으로 다 담기
         for(Process p : inputProcess) queue.offer(p.serviceTime);
-
         for(int i = 0 ; i < inputProcess.length ; i ++){
             int serviceTime = queue.poll();
-            for(int j = timeCount ; j < timeCount+serviceTime ; j ++) board[i][j]=" ■ ";
+            for(int j = timeCount ; j < timeCount+serviceTime ; j ++) board[i][j]=" V ";
             timeCount+=serviceTime;
         }
 
-        printBoard(board);
+        //출력
+        System.out.println("\n-------------------------- [ FIFO ] --------------------------");
+        process.printBoard(board,inputProcess,totalTime);
+
     }
 }
