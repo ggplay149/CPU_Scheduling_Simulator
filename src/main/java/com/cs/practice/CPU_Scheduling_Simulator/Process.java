@@ -35,7 +35,7 @@ public class Process {
             System.out.print(inputProcess[i].processName);
             for(int j = 0 ; j < totalTime ; j++ ){
                 if(board[i][j]==null)System.out.print(" O ");
-                else System.out.print(board[i][j]);
+                else System.out.print(" # ");
             }
             System.out.println();
         }

@@ -1,8 +1,6 @@
 package com.cs.practice.CPU_Scheduling_Simulator;
 
-import java.util.Comparator;
 import java.util.LinkedList;
-import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class RoundRobin {
@@ -14,40 +12,62 @@ public class RoundRobin {
         int totalTime = process.totalTime(inputProcess);
         String[][] board = new String[inputProcess.length][totalTime];
 
-        //Round_Robin 알고리즘 시작
-         Queue<Process> queue = new LinkedList<>();
+
+        //RR 알고리즘
+
+        Queue<Process> queue = new LinkedList<>();
+        queue.offer(inputProcess[0]);
+        System.out.print("0초 : " +inputProcess[0].processName +"/"+inputProcess[0].remainTime);
+        System.out.println();
         int timeCount = 0;
-        int completedProcessNum = 0;
-        int processNum = inputProcess.length;
-        while(processNum>completedProcessNum) {
 
-            System.out.print(completedProcessNum+"/"+timeCount + "sec : ");
 
-            for(int i = completedProcessNum ; i < processNum ; i ++){
-                if(inputProcess[i].arrivalTime<=timeCount){
-                    if(inputProcess[i].remainTime > 0){
-                        inputProcess[i].remainTime -=1;
-                        queue.offer(inputProcess[i]);
-                    }else{
-                        inputProcess[i].remainTime = 0;
-                        queue.offer(inputProcess[i]);
-                        completedProcessNum++;
+
+        while(!queue.isEmpty()){
+            Process currentProcess = queue.poll();
+            String processName = currentProcess.processName;
+            int remainTime = currentProcess.remainTime;
+            int execTime = Math.min(TQ,remainTime);
+
+            if(execTime > 0) {
+
+                //현재 프로세스 index 찾기
+                int processIdx = 0;
+                for (int j = 0; j < inputProcess.length; j++) {
+                    if (inputProcess[j].processName.equals(processName)) {
+                        processIdx = j;
+                        break;
                     }
                 }
+
+                int startTime = timeCount;
+                for (int i = startTime; i < startTime + execTime; i++) {
+
+                    currentProcess.remainTime--;
+
+                    queue.offer(currentProcess);
+                    timeCount++;
+                    for (int j = 0; j < inputProcess.length; j++) {
+                        if (inputProcess[j].arrivalTime == i) {
+                            queue.offer(inputProcess[j]);
+                        }
+                    }
+                    System.out.print(timeCount + "초 : ");
+                    for(Process p : queue)System.out.print(p.processName+"/"+p.remainTime+" ");
+                    System.out.println();
+
+                    board[processIdx][i] = " 1 ";
+
+                }
+
             }
-            for(Process p : queue){
-                System.out.print(p.processName + "/"+p.remainTime+" ");
-            }
-            System.out.println();
-            queue.poll();
-            timeCount++;
+
+
 
         }
-
-
-
         //출력
-//        System.out.println("\n-------------------------- [ round_robin ] --------------------------");
-//        process.printBoard(board,inputProcess,totalTime);
+        System.out.println("\n-------------------------- [ round_robin ] --------------------------");
+        process.printBoard(board,inputProcess,totalTime);
     }
+
 }
