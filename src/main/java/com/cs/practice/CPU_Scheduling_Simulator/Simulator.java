@@ -6,8 +6,10 @@ public class Simulator {
     public static void main (String[] args){
 
         FIFO fifo = new FIFO();
+        RoundRobin roundRobin = new RoundRobin();
 
         fifo.exec();
+        roundRobin.exec(1);
 
     }
 

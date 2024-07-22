@@ -22,7 +22,7 @@ public class FIFO {
         for(Process p : inputProcess) queue.offer(p.serviceTime);
         for(int i = 0 ; i < inputProcess.length ; i ++){
             int serviceTime = queue.poll();
-            for(int j = timeCount ; j < timeCount+serviceTime ; j ++) board[i][j]=" V ";
+            for(int j = timeCount ; j < timeCount+serviceTime ; j ++) board[i][j]=" # ";
             timeCount+=serviceTime;
         }
 
