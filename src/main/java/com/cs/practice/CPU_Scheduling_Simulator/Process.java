@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Process {
 
-    String processName;
-    int arrivalTime;
-    int serviceTime;
-    int remainTime;
-    int age;
+    public String processName;
+    public int arrivalTime;
+    public int serviceTime;
+    public int remainTime;
+    public int age;
 
     public Process[] inputProcess(){
         return new Process[]{

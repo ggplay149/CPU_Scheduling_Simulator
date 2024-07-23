@@ -1,9 +1,11 @@
-package com.cs.practice.CPU_Scheduling_Simulator;
+package com.cs.practice.CPU_Scheduling_Simulator.algorithm;
+
+import com.cs.practice.CPU_Scheduling_Simulator.Process;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class RoundRobin {
+public class RR {
     public void exec(int TQ) {
 
         //프로세스, 출력판 초기화

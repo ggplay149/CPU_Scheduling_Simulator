@@ -1,5 +1,6 @@
-package com.cs.practice.CPU_Scheduling_Simulator;
+package com.cs.practice.CPU_Scheduling_Simulator.algorithm;
 
+import com.cs.practice.CPU_Scheduling_Simulator.Process;
 import lombok.NoArgsConstructor;
 
 import java.util.Comparator;
