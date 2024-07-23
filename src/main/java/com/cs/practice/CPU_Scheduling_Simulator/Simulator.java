@@ -3,15 +3,16 @@ package com.cs.practice.CPU_Scheduling_Simulator;
 
 public class Simulator {
 
-    public static void main (String[] args){
+    public static void main(String[] args) {
 
-        FIFO fifo = new FIFO();
+        FCFS fcfs = new FCFS();
         SJF sjf = new SJF();
         RoundRobin roundRobin = new RoundRobin();
 
-        fifo.exec();
+        fcfs.exec();
         sjf.exec();
         roundRobin.exec(1);
+        roundRobin.exec(4);
 
     }
 

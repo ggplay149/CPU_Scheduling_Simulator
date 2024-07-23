@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class RoundRobin {
-    public void exec(int TQ){
+    public void exec(int TQ) {
 
         //프로세스, 출력판 초기화
         Process process = new Process();
@@ -12,62 +12,62 @@ public class RoundRobin {
         int totalTime = process.totalTime(inputProcess);
         String[][] board = new String[inputProcess.length][totalTime];
 
-
         //RR 알고리즘
+        int completedProcessCount = 0;
+        int inputProcessCount = inputProcess.length;
+
+        //첫번째 프로세스 도착 시간부터 타임카운트
+        int timeCount = inputProcess[0].arrivalTime;
 
         Queue<Process> queue = new LinkedList<>();
+
+        //최초의 프로세스 넣고 시작
         queue.offer(inputProcess[0]);
-        System.out.print("0초 : " +inputProcess[0].processName +"/"+inputProcess[0].remainTime);
-        System.out.println();
-        int timeCount = 0;
 
+        while (completedProcessCount < inputProcessCount) {
 
-
-        while(!queue.isEmpty()){
             Process currentProcess = queue.poll();
-            String processName = currentProcess.processName;
-            int remainTime = currentProcess.remainTime;
-            int execTime = Math.min(TQ,remainTime);
 
-            if(execTime > 0) {
+            //현재 프로세스 인덱스 찾아두기
+            int processIdx = 0;
+            for (int j = 0; j < inputProcess.length; j++) {
+                if (inputProcess[j].processName.equals(currentProcess.processName)) {
+                    processIdx = j;
+                    break;
+                }
+            }
 
-                //현재 프로세스 index 찾기
-                int processIdx = 0;
-                for (int j = 0; j < inputProcess.length; j++) {
-                    if (inputProcess[j].processName.equals(processName)) {
-                        processIdx = j;
-                        break;
+            //남은시간과 TQ중 적은 시간만큼 실행
+            int execTime = Math.min(TQ, currentProcess.remainTime);
+
+            //execTime 만큼 1초씩 진행
+            for (int i = 0; i < execTime; i++) {
+
+                //1초씩 진행하면서 arrivalTime이 된 다음 프로세스있는지 확인
+                for (int j = 1; j < inputProcessCount; j++) {
+                    if (inputProcess[j].arrivalTime == timeCount) {
+                        queue.offer(inputProcess[j]);
                     }
                 }
 
-                int startTime = timeCount;
-                for (int i = startTime; i < startTime + execTime; i++) {
-
-                    currentProcess.remainTime--;
-
-                    queue.offer(currentProcess);
-                    timeCount++;
-                    for (int j = 0; j < inputProcess.length; j++) {
-                        if (inputProcess[j].arrivalTime == i) {
-                            queue.offer(inputProcess[j]);
-                        }
-                    }
-                    System.out.print(timeCount + "초 : ");
-                    for(Process p : queue)System.out.print(p.processName+"/"+p.remainTime+" ");
-                    System.out.println();
-
-                    board[processIdx][i] = " 1 ";
-
-                }
+                //1초씩 remain 타임 감소, 보드판 진행, 타임카운트증가
+                currentProcess.remainTime--;
+                board[processIdx][timeCount] = " 1 ";
+                timeCount++;
 
             }
 
-
-
+            //남은시간이 0이 아니면 큐에 다시 넣기
+            if (currentProcess.remainTime != 0) {
+                queue.offer(currentProcess);
+            } else {
+                //남은시간이 0이면 종료된 프로세스 카운트 증가
+                completedProcessCount++;
+            }
         }
         //출력
-        System.out.println("\n-------------------------- [ round_robin ] --------------------------");
-        process.printBoard(board,inputProcess,totalTime);
+        System.out.println("\n------------------- [ Round_Robin TQ : " + TQ + " ] -------------------");
+        process.printBoard(board, inputProcess, totalTime);
     }
 
 }
