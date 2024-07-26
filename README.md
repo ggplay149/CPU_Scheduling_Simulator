@@ -112,7 +112,7 @@ CPU 스케쥴링 알고리즘 구현 시뮬레이터
 
 
  
-![image](https://github.com/user-attachments/assets/21dcebff-f61a-474a-beee-9c5d8f5ffc8f)
+![image](https://github.com/user-attachments/assets/5fb19595-a5dd-4563-8e48-723e43b31fb0)
 
 
 -  우선순위를 구분한 큐를 여러개 두고 조건에 따라 프로세스가 큐사이를 이동
