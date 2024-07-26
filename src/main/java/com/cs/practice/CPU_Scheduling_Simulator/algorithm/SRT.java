@@ -33,40 +33,29 @@ public class SRT {
             }
         });
 
-        //최초의 프로세스 넣고 시작
-        queue.offer(inputProcess[0]);
+        while(inputProcessCount > completedProcessCount){
 
-        while (completedProcessCount < inputProcessCount) {
+            for(Process p : inputProcess){
+                if(p.arrivalTime == timeCount-1){
+                    queue.offer(p);
+                }
+            }
+
 
             Process currentProcess = queue.poll();
+            String processName = currentProcess.processName;
 
-            //현재 진행중인 프로세스명 찾아두기
             int processIdx = 0;
             for (int j = 0; j < inputProcess.length; j++) {
-                if (inputProcess[j].processName.equals(currentProcess.processName)) {
+                if (inputProcess[j].processName.equals(processName)) {
                     processIdx = j;
                     break;
                 }
             }
 
-            //남은시간과 TQ중 적은 시간만큼 실행
-            int execTime = Math.min(TQ, currentProcess.remainTime);
-
-            //execTime 만큼 1초씩 진행
-            for (int i = 0; i < execTime; i++) {
-                //1초씩 진행하면서 arrivalTime이 된 다음 프로세스있는지 확인
-                for (int j = 1; j < inputProcessCount; j++) {
-                    if (inputProcess[j].arrivalTime == timeCount) {
-                        queue.offer(inputProcess[j]);
-                    }
-                }
-
-                //1초씩 remain 타임 감소, 보드판 진행, 타임카운트증가
-                currentProcess.remainTime--;
-                board[processIdx][timeCount] = " 1 ";
-                timeCount++;
-
-            }
+            currentProcess.remainTime--;
+            board[processIdx][timeCount] = " 1 ";
+            timeCount++;
 
             //남은시간이 0이 아니면 큐에 다시 넣기
             if (currentProcess.remainTime != 0) {
@@ -75,9 +64,14 @@ public class SRT {
                 //남은시간이 0이면 종료된 프로세스 카운트 증가
                 completedProcessCount++;
             }
+
         }
+
+
+
+
         //출력
-        System.out.println("\n--------------------- [ SRT TQ : " + TQ + " ] ---------------------");
+        System.out.println("\n------------------------- [ SRT ] -------------------------");
         process.printBoard(board, inputProcess, totalTime);
     }
 }
