@@ -11,16 +11,14 @@ public class Process {
     public int arrivalTime;
     public int serviceTime;
     public int remainTime;
-    public int cpuReturnTime;
-
 
     public Process[] inputProcess(){
         return new Process[]{
-                new Process("A",0,4,4,1),
-                new Process("B",1,3,3,2),
-                new Process("C",3,3,3,3),
-                new Process("D",4,2,2,0),
-                new Process("E",5,2,2,5)
+                new Process("A",0,3,3),
+                new Process("B",2,6,6),
+                new Process("C",4,4,4),
+                new Process("D",6,5,5),
+                new Process("E",8,2,2)
         };
     }
 
@@ -35,9 +33,9 @@ public class Process {
     public void printBoard(String[][] board,Process[] inputProcess, int totalTime){
         for(int i = 0 ; i < inputProcess.length ; i ++){
             System.out.print(inputProcess[i].processName);
-            for(int j = 0 ; j < totalTime ; j++ ){
-                if(board[i][j]==null)System.out.print(" O ");
-                else System.out.print(" # ");
+            for(int j = 1 ; j <= totalTime ; j++ ){
+                if(board[i][j]==null)System.out.print(" - ");
+                else System.out.print(" @ ");
             }
             System.out.println();
         }

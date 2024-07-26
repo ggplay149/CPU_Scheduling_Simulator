@@ -14,8 +14,8 @@ public class SJF {
         Process process = new Process();
         Process[] inputProcess = process.inputProcess();
         int totalTime = process.totalTime(inputProcess);
-        String[][] board = new String[inputProcess.length][totalTime];
-        int timeCount = 0;
+        String[][] board = new String[inputProcess.length][totalTime+1];
+        int timeCount = 1;
 
         //SJF 알고리즘
         PriorityQueue<Process> queue = new PriorityQueue<>(new Comparator<Process>() {

@@ -3,26 +3,24 @@ package com.cs.practice.CPU_Scheduling_Simulator.algorithm;
 import com.cs.practice.CPU_Scheduling_Simulator.Process;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 
 @NoArgsConstructor
 public class MLFQ {
 
-    public void exec(int queueNum, int TQ, int S) {
+    public void exec(int queueNum, int S) {
 
         //프로세스, 출력판 초기화
         Process process = new Process();
         Process[] inputProcess = process.inputProcess();
         int totalTime = process.totalTime(inputProcess);
-        String[][] board = new String[inputProcess.length][totalTime];
+        String[][] board = new String[inputProcess.length][totalTime+1];
 
         int completedProcessCount = 0;
         int inputProcessCount = inputProcess.length;
+        int TQ = 0;
 
-        List<Deque<Process>> queueList = new ArrayList<>();
+        List<Queue<Process>> queueList = new ArrayList<>();
 
         int sCount = 0;
 
@@ -33,27 +31,27 @@ public class MLFQ {
         //MLFQ 알고리즘
 
         //첫번째 프로세스 도착 시간부터 타임카운트
-        int timeCount = inputProcess[0].arrivalTime;
+        int timeCount = inputProcess[0].arrivalTime+1;
 
         //첫프로세스 가장 최상단 큐에 넣기
         queueList.get(0).offer(inputProcess[0]);
 
         while (completedProcessCount < inputProcessCount) {
+
+            //현재 적재된 프로세스 객수 카운팅
+            int currentProcessCount = 0;
+            for(int i = 0 ; i < queueNum ; i ++){
+                currentProcessCount += queueList.get(i).size();
+            }
+
             for(int q = 0 ; q <queueNum ; q ++){
+
+                TQ = 0;
 
                 //최우선 큐부터 검사해서 큐가 비어있지 않다면
                 if(!queueList.get(q).isEmpty()){
 
-                    System.out.print(timeCount+"sec : queue1 : ");
-                    for(Process p : queueList.get(0))System.out.print(p.processName+"/"+p.remainTime+" ");
-                    System.out.println();
-                    System.out.print(timeCount+"sec : queue2 : ");
-                    for(Process p : queueList.get(1))System.out.print(p.processName+"/"+p.remainTime+" ");
-                    System.out.println();
-                    System.out.print(timeCount+"sec : queue3 : ");
-                    for(Process p : queueList.get(2))System.out.print(p.processName+"/"+p.remainTime+" ");
-                    System.out.println();
-                    System.out.println("==============================");
+                    TQ = (int)Math.pow(2,q);
 
                     Process currentProcess = queueList.get(q).poll();
 
@@ -70,16 +68,16 @@ public class MLFQ {
                     int execTime = Math.min(TQ, currentProcess.remainTime);
 
                     //execTime 만큼 1초씩 진행
-                    for (int i = 0; i < TQ; i++) {
+                    for (int i = 0; i < execTime; i++) {
 
                         //S 쿨타임이 차면 가장 우선순위 낮은 큐의 가장오래된 프로세스부터 최상위 큐로 push
-                        if(sCount == S-1){
+                        if(S != -1 && sCount == S-1){
 
                             for(int z = 1; z < queueNum; z++){
                                 if(!queueList.get(z).isEmpty()){
                                     int queueSize = queueList.get(z).size();
                                     for(int j = 0 ; j < queueSize ; j++){
-                                        queueList.get(0).addFirst(queueList.get(z).pollLast());
+                                        queueList.get(0).offer(queueList.get(z).poll());
                                     }
                                 }
                             }
@@ -88,10 +86,8 @@ public class MLFQ {
 
                         //1초씩 진행하면서 arrivalTime이 된 다음 프로세스있는지 확인
                         for (int j = 1; j < inputProcessCount; j++) {
-                            if (inputProcess[j].arrivalTime == timeCount+1) {
-
-                                //도착한 프로세스는 무조건 최상단 큐에 들어감
-                                queueList.get(0).addFirst(inputProcess[j]);
+                            if (inputProcess[j].arrivalTime == timeCount) {
+                                queueList.get(0).offer(inputProcess[j]);
                             }
                         }
 
@@ -100,20 +96,17 @@ public class MLFQ {
                         board[processIdx][timeCount] = " 1 ";
                         timeCount++;
                         sCount++;
-
-
-
                     }
+
 
                     //남은시간이 0이 아니고
                     if (currentProcess.remainTime != 0) {
-                        //cpuRetrunTime이 TQ 보다 작다면 현재 우선순위 큐 유지
-                        if(currentProcess.cpuReturnTime < TQ) {
-                            queueList.get(q).offerLast(currentProcess);
-                        }else //cpuRetrunTime이 TQ 크거나 같다면 우선순위 강등
-                        {
-                           if(q+1==queueNum) queueList.get(q).offerLast(currentProcess);
-                           else queueList.get(q+1).offerLast(currentProcess);
+
+                        if(currentProcessCount == 1)  queueList.get(q).offer(currentProcess);
+                        else{
+                            if(q+1==queueNum) queueList.get(q).offer(currentProcess);
+                            else queueList.get(q+1).offer(currentProcess);
+
                         }
                     } else {
                         //남은시간이 0이면 종료된 프로세스 카운트 증가
@@ -127,7 +120,7 @@ public class MLFQ {
         }
 
         //출력
-        System.out.println("\n------------------- [ MLFQ TQ : " + TQ + " ] -------------------");
+        System.out.println("\n-------------- [ MLFQ Q : " + queueNum + ", TQ : 2^i, S : "+S+" ] --------------");
         process.printBoard(board, inputProcess, totalTime);
     }
 }
