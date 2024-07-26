@@ -20,9 +20,9 @@ public class MLFQ {
         int inputProcessCount = inputProcess.length;
         int TQ = 0;
 
-        List<Queue<Process>> queueList = new ArrayList<>();
+        List<Deque<Process>> queueList = new ArrayList<>();
 
-        int sCount = 0;
+        int sCount = 1;
 
         for(int i = 0 ;  i <queueNum; i ++){
             queueList.add(new ArrayDeque<Process>());
@@ -70,8 +70,17 @@ public class MLFQ {
                     //execTime 만큼 1초씩 진행
                     for (int i = 0; i < execTime; i++) {
 
+
+
+                        //1초씩 진행하면서 arrivalTime이 된 다음 프로세스있는지 확인
+                        for (int j = 1; j < inputProcessCount; j++) {
+                            if (inputProcess[j].arrivalTime == timeCount) {
+                                queueList.get(0).offer(inputProcess[j]);
+                            }
+                        }
+
                         //S 쿨타임이 차면 가장 우선순위 낮은 큐의 가장오래된 프로세스부터 최상위 큐로 push
-                        if(S != -1 && sCount == S-1){
+                        if(i == execTime-1 && S != -1 && sCount == S-1){
 
                             for(int z = 1; z < queueNum; z++){
                                 if(!queueList.get(z).isEmpty()){
@@ -81,14 +90,7 @@ public class MLFQ {
                                     }
                                 }
                             }
-                            sCount = 0;
-                        }
-
-                        //1초씩 진행하면서 arrivalTime이 된 다음 프로세스있는지 확인
-                        for (int j = 1; j < inputProcessCount; j++) {
-                            if (inputProcess[j].arrivalTime == timeCount) {
-                                queueList.get(0).offer(inputProcess[j]);
-                            }
+                            sCount = 1;
                         }
 
                         //1초씩 remain 타임 감소, 보드판 진행, 타임카운트증가

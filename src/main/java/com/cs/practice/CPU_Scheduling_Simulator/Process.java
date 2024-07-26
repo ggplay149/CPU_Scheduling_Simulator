@@ -11,14 +11,15 @@ public class Process {
     public int arrivalTime;
     public int serviceTime;
     public int remainTime;
+    public int age;
 
     public Process[] inputProcess(){
         return new Process[]{
-                new Process("A",0,3,3),
-                new Process("B",2,6,6),
-                new Process("C",4,4,4),
-                new Process("D",6,5,5),
-                new Process("E",8,2,2)
+                new Process("A",0,3,3,0),
+                new Process("B",2,6,6,0),
+                new Process("C",4,4,4,0),
+                new Process("D",6,5,5,0),
+                new Process("E",8,2,2,0)
         };
     }
 
