@@ -1,5 +1,19 @@
 # CPU_Scheduling_Simulator
 
+<br>
+
+CPU 스케쥴링 알고리즘 구현 시뮬레이터
+
+사용한 프로세스 예시)
+
+![image](https://github.com/user-attachments/assets/fb10158b-4b10-4b48-a9c0-df41a91ee083)
+
+
+
+<br>
+
+
+
 <details>
 
 <summary> 비선점 스케쥴링 </summary>  
@@ -10,6 +24,8 @@
 비선점 스케쥴링?
 
 - 자원을 어떤 프로세스가 사용하고 있다면 다른 프로세스가 우선순위 여부와 상관없이 자원을 뺏을 수 없음
+- 비효율 context switching 으로 인한 오버헤드가 적음
+  
 
 
 
@@ -57,6 +73,9 @@
 선점 스케쥴링?
 
 - 우선순위가 높은 프로세스가 현재 프로세스를 중지시키고 자신이 자원을 점유할수 있음
+- 호율적이고 응답시간이 빠르지만 context switching 으로인한 오버헤드가 있음
+- 전체적으로 얼만큼의 시간이 걸릴지 파악가
+  
 
 
   
